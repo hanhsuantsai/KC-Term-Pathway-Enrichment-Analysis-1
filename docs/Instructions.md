@@ -204,3 +204,18 @@ write.csv(gsea_results, file = "results/gsea_results.csv", row.names = FALSE)
 Files that will be saved include:
 - `ora_results.csv`
 - `gsea_results.csv`
+
+## Citations
+
+This project uses the following R packages:
+
+- **tidyverse**:
+   -Wickham, H., & RStudio. (2019). _tidyverse: Easily install and load the 'tidyverse'_. R package version 1.2.1. Available at: [https://CRAN.R-project.org/package=tidyverse](https://CRAN.R-project.org/package=tidyverse)
+
+- **clusterProfiler**:
+  -Yu, G., Wang, L.-G., Han, Y., & He, Q.-Y. (2012). _clusterProfiler: an R package for comparing biological themes among gene clusters_. OMICS: A Journal of Integrative Biology, 16(5), 284-287. Available at: [https://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html](https://www.bioconductor.org/packages/release/bioc/html/clusterProfiler.html)
+
+## License
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
+
