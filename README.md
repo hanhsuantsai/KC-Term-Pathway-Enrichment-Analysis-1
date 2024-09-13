@@ -18,6 +18,12 @@ The repository is organized into three main folders for better management of fil
 - **docs/**: Documentation files, including the usage guide for running the scripts.
   - `Instructions.md`: Step-by-step guide on how to run the pathway enrichment analysis.
 
+## Automated Data Loading
+The datasets required for the analysis are automatically loaded through the provided R code. You do not need to manually download or specify paths for the following datasets:  
+- `KEGG Gene Sets`
+- `KC Gene Sets`
+- `Reactome Gene Sets`
+
 
 ## Usage
 
@@ -25,6 +31,11 @@ To run the enrichment analysis, follow the steps outlined in the **Instructions.
 
 - Dependencies and installation
 - Running ORA and GSEA with your gene lists
+- The results will be saved as a CSV file in the results folder.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+
 
 ## Contact
 For questions, contact [owarekings@tamu.edu](mailto:owarekings@tamu.edu).
