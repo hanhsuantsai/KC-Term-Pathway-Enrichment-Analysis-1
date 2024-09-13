@@ -32,12 +32,11 @@ This repository contains the following essential data files:
 
 
 **Loading the Data:** You need to load the .Rdata files in your R session before running the analysis.  
-Here's how to do that:
-- locate the path to your downloaded dataset
-- specify the path where appropriate in the codes below before running.
+To simplify this process, we provide automated code to load the KEGG and Reactome gene sets directly from the GitHub repository.
+Run the following R code to load the datasets:
 ```r
-### load KC gene sets_Reactome
-load(file = "path to KC_Reactome_genes.Rdata") # replace with path to your KC_Reactome_genes.Rdata
+# Loading KC gene sets Reactome from GitHub repository
+load(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_Reactome_genes.Rdata"))
 
 b <- list()
 for (i in 1:length(KC_Reactome_genes)){
@@ -49,8 +48,8 @@ for (i in 1:length(KC_Reactome_genes)){
 }
 KC_gene_set_reactome <- do.call("rbind", b) %>% as.data.frame()
 
-### KEGG
-load(file = "path to KC_KEGG_genes.Rdata") # replace with path to your KC_KEGG_genes.Rdata
+# Loading KC gene sets KEGG from GitHub repository
+load(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_KEGG_genes.Rdata"))
 
 b <- list()
 for (i in 1:length(KC_KEGG_genes)){
@@ -62,6 +61,7 @@ for (i in 1:length(KC_KEGG_genes)){
 }
 KC_gene_set_KEGG <- do.call("rbind", b) %>% as.data.frame()
 ```
+By running the above code, you will automatically load the datasets needed for your analysis, eliminating the need to manually locate and specify file paths.
 
 # 4.Running the Code
 **ORA (Over-Representation Analysis)**
@@ -73,7 +73,9 @@ This function performs an over-representation analysis using a list of different
 `annotation:` A data frame with two columns: first, KC terms, and second, genes associated with those terms.  
 `background:` A vector of background genes.  
 `treatment:` A label for the experimental condition (character).  
-`sig_level:` The significance threshold (usually 0.05).  
+`sig_level:` The significance threshold (usually 0.05).   
+
+Here’s the function that you will use to run ORA with your data:
 ```r
 ##  clusterProfiler
 clusterProfiler_ORA <- function(data, # a list of DEG
@@ -82,7 +84,7 @@ clusterProfiler_ORA <- function(data, # a list of DEG
                                 treatment, # experimental condition
                                 sig_level) {# significant level (fdr) for enrichment analysis
   
-  KC_Terms <- read.csv(file = "KC_Terms.csv")  # replace with your path to KC_Terms.csv
+KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_Terms.csv"))
   
   eTerm <- enricher(gene = data,
                     universe = background,
@@ -105,8 +107,21 @@ clusterProfiler_ORA <- function(data, # a list of DEG
 
 ### How to Run ORA:
 
-1. Load your own DEG list as a vector and define your background genes.
-2. Run the `clusterProfiler_ORA` function with your inputs.
+1. **Load your DEG list:** Prepare your DEG list as a vector.
+2. **Load your background gene list:** Prepare your background gene list as another vector.
+3. **Load the annotation data:** The annotation data contains KC terms associated with genes from KEGG or Reactome. This is already loaded in your R.
+```r
+annotation_data <- KC_gene_set_KEGG  ## you can also use KC_gene_set_reactome
+```
+5. **Run the ORA function:** Call the clusterProfiler_ORA function with your inputs, specifying your data and experiment details:
+
+```r
+ora_results <- clusterProfiler_ORA(significant_genes, # your significant genes
+                                   annotation_data, # don't replace this
+                                   background_genes, # your background genes should be here
+                                   "My_Condition", # use your experimental condition
+                                   0.05) # significant level (fdr) for enrichment analysis
+```
 
 
 ### GSEA (Gene Set Enrichment Analysis)
@@ -117,13 +132,15 @@ This function runs GSEA using a ranked gene list and identifies the KC terms tha
 - `annotation:` A data frame with two columns: KC terms and associated genes.
 - `treatment:` A label for the experimental condition (character).
 - `sig_level:` The significance threshold (usually 0.05).
+
+Here’s the function that you will use to run ORA with your data:
 ```r
 clusterProfiler_GSEA <- function(data,         # ranked gene list
                                  annotation,   # TERM2GENE annotation
                                  treatment,    # experimental condition label
                                  sig_level) {  # significance level (FDR cutoff)
   
-  KC_Terms <- read.csv(file = "KC_Terms.csv")  # replace with your path to KC_Terms.csv
+KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_Terms.csv"))
   
   eTerm <- GSEA(data,                          # ranked gene list
                 TERM2GENE = annotation,        # gene set annotations
@@ -149,7 +166,18 @@ clusterProfiler_GSEA <- function(data,         # ranked gene list
 ```
 ### How to Run GSEA:
 1. Prepare a ranked gene list as input.
-2. Run the clusterProfiler_GSEA function with your data and parameters.
+2. **Load the annotation data:** The annotation data contains KC terms associated with genes from KEGG or Reactome. This is already loaded in your R.
+```r
+annotation_data <- KC_gene_set_KEGG  ## you can also use KC_gene_set_reactome
+```
+5. **Run the Gsea function:** Call the clusterProfiler_GSEA function with your inputs, specifying your data and experiment details:
+
+```r
+gsea_results <- clusterProfiler_GSEA(data,              # replace with your ranked gene list
+                                     annotation_data,   # do not replace this
+                                     "treatment",       # replace with your experimental condition
+                                      0.05)             # significance level (FDR cutoff)
+```
 
 ## 4. Expected Outcome
 Both ORA and GSEA will return a data frame with the following columns:
@@ -160,3 +188,19 @@ Both ORA and GSEA will return a data frame with the following columns:
 - **treatment:** The experimental condition label.
 -  **KC_Term Description:** Description of the KC Term enriched.
 
+## 5. Save Results
+Results from the enrichment analysis will be saved into the `results` folder. This folder is created automatically if it doesn't already exist.
+Run the following code to save the result:
+```r
+# Ensure the "results" folder exists
+if (!dir.exists("results")) {
+  dir.create("results")
+}
+
+# Saving ORA and GSEA results into the 'results' folder
+write.csv(ora_results, file = "results/ora_results.csv", row.names = FALSE)
+write.csv(gsea_results, file = "results/gsea_results.csv", row.names = FALSE)
+```
+Files that will be saved include:
+- `ora_results.csv`
+- `gsea_results.csv`
