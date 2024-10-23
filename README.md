@@ -14,16 +14,13 @@ Users can input their own gene lists (either as a vector of DEGs for ORA or a ra
 The repository is organized into three main folders for better management of files and scripts:
 
 - **data/**: Contains raw and processed data files used for pathway enrichment.
-  - `KC_KEGG_genes.Rdata`: Contains KC terms and genes associated with the KC terms in the KEGG database.
-  - `KC_Reactome_genes.Rdata`: Contains KC terms and genes associated with the KC terms in the Reactome database.
+  - `KC_gene_set_KEGG.csv`: Contains KC terms and genes associated with the KC terms in the KEGG database.
+  - `KC_gene_set_REACTOME.csv`: Contains KC terms and genes associated with the KC terms in the Reactome database.
   - `KC_Terms.csv`: Contains descriptions of the KC terms.
   
 - **scripts/**: Contains the R scripts used for the pathway enrichment analysis.
   - `ORA_function.R`: Script for running Over-Representation Analysis (ORA).
   - `GSEA_function.R`: Script for running Gene Set Enrichment Analysis (GSEA).
-  
-- **docs/**: Documentation files, including the usage guide for running the scripts.
-  - `Instructions.md`: Step-by-step guide on how to run the pathway enrichment analysis.
 
 - **results/**: Enrichment results will be automatically saved in this directory after running the scripts.
 
