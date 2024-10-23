@@ -26,9 +26,9 @@ The repository is organized into three main folders for better management of fil
 
 ## B. Automated Data Loading
 The datasets required for the analysis are automatically loaded through the provided R code. You do not need to manually download or specify paths for the following datasets:  
-- `KEGG Gene Sets`
-- `KC Gene Sets`
-- `Reactome Gene Sets`
+- `KC_gene_set_KEGG.csv:` Contains KC terms and genes associated with the KC terms in the KEGG database.
+- `KC_gene_set_REACTOME.csv:` Contains KC terms and genes associated with the KC terms in the Reactome database.
+- `KC_Terms.csv:` Contains descriptions of the KC terms.
 
 
 ## C. Usage
@@ -54,14 +54,7 @@ for (pkg in required_packages) {
 library(clusterProfiler)
 library(tidyverse)
 ```
-### 3.Data Files
-This repository contains the following essential data files:
-- `KC_gene_set_KEGG.csv:` Contains KC terms and genes associated with the KC terms in the KEGG database.
-- `KC_gene_set_REACTOME.csv:` Contains KC terms and genes associated with the KC terms in the Reactome database.
-- `KC_Terms.csv:` Contains descriptions of the KC terms.
-
-
-**Loading the Data  
+### 3. Loading the data 
 Run the following R code to load the datasets:
 ```r
 # Loading KC gene sets Reactome from GitHub repository
@@ -104,7 +97,7 @@ KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term
 }
 ```
 
-### How to Run ORA:
+### How to run ORA:
 
 1. **Load your DEG list:** Prepare your DEG list as a vector.
 2. **Load your background gene list:** Prepare your background gene list as another vector.
@@ -144,7 +137,7 @@ KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term
   return(output)                               # return the processed output
 }
 ```
-### How to Run GSEA:
+### How to run GSEA:
 1. Prepare a ranked gene list as input.
 2. **Load the annotation data:** The annotation data contains KC terms associated with genes from KEGG or Reactome. This is already loaded in your R.
 3. **Run the Gsea function:** Call the clusterProfiler_GSEA function with your inputs.
