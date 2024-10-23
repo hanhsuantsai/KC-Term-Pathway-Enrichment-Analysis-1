@@ -68,10 +68,10 @@ This repository contains the following essential data files:
 Run the following R code to load the datasets:
 ```r
 # Loading KC gene sets Reactome from GitHub repository
-KC_gene_set_REACTOME <- load(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_REACTOME.csv"))
+KC_gene_set_REACTOME <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_REACTOME.csv"))
 
 # Loading KC gene sets KEGG from GitHub repository
-KC_gene_set_KEGG <- load(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_KEGG.csv"))
+KC_gene_set_KEGG <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_KEGG.csv"))
 ```
 
 ### 4.Running the Code
