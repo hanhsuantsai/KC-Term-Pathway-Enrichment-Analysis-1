@@ -28,7 +28,7 @@ ORA<- clusterProfiler_ORA(data =res$gene,
 write.csv(ORA, "results/ORA_results.csv", row.names = FALSE)
 
 
-sort <- DEG %>%
+sort <- data %>%
   filter(!is.na(gene)) %>%
   filter(log2FoldChange != 0) %>%
   group_by(gene) %>%
