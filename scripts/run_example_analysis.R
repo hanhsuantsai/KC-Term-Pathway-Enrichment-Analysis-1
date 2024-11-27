@@ -37,7 +37,6 @@ sort <- DEG %>%
 
 ranked_genes <- setNames(sort$log2FoldChange, sort$gene)
 GSEA <- clusterProfiler_GSEA(ranked_genes, annotation,
-                             background,
                              treatment,
                              sig_level) %>%
   subset(, select = c(1,2,6,7)) %>%
