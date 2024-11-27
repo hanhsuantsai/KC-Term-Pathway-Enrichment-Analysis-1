@@ -8,7 +8,7 @@ res <-data  %>%
  
 annotation <- KC_gene_set_REACTOME
 
-background <- DEG$gene
+background <- data$gene
 
 treatment <- "test"
 
