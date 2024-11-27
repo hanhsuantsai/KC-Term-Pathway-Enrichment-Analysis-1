@@ -6,7 +6,7 @@ res <-data  %>%
   filter(padj < 0.1) %>%
   filter(abs(log2FoldChange) > 1)
  
-annotation <- KC_gene_set_reactome
+annotation <- KC_gene_set_Reactome
 
 background <- DEG$gene
 
@@ -16,7 +16,7 @@ sig_level <- 1
 
 
 ORA<- clusterProfiler_ORA(data =res$gene,
-                          annotation = KC_gene_set_reactome,
+                          annotation = KC_gene_set_Reactome,
                           background = background,
                           treatment = treatment,
                           sig_level = sig_level) %>%
