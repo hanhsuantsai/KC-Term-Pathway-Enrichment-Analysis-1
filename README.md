@@ -159,6 +159,18 @@ Files that will be saved include:
 - `ora_results.csv`
 - `gsea_results.csv`
 
+## 6. Run Example Dataset
+A script named run_example_analysis.R is provided in the scripts/ folder to demonstrate how to run ORA and GSEA on example datasets in the `data/` folder.  
+Before running this script, ensure you have followed the above instructions to install the necessary R packages, and load the required functions.
+
+To execute the script, use the following command in R:
+
+```r
+## run example dataset
+source(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/scripts/run_example_analysis.R"))
+```
+This will automatically load example dataset from the data/ folder, perform the analyses, and save the results in the results/ folder.
+
 ## Citations
 
 This project uses the following R packages:
