@@ -27,11 +27,9 @@ Run the following R code to load Gene Sets:
 ```r
 # Loading KC gene sets Reactome from GitHub repository
 KC_gene_set_REACTOME <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_REACTOME.csv"))
-head(KC_gene_set_REACTOME)
 
 # Loading KC gene sets KEGG from GitHub repository
 KC_gene_set_KEGG <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_KEGG.csv"))
-head(KC_gene_set_KEGG)
 ```
 
 ### 3.Running the Code
@@ -114,6 +112,7 @@ data <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pat
 res <-data  %>%
   filter(padj < 0.1) %>%
   filter(abs(log2FoldChange) > 1)
+head(res)
  
 annotation <- KC_gene_set_REACTOME
 
@@ -133,8 +132,8 @@ ORA<- clusterProfiler_ORA(data =res$gene,
   mutate(Enrichment = "ORA") %>%
   mutate(Treatment = treatment)
 
-# Save ORA results
-write.csv(ORA, "results/ORA_results.csv", row.names = FALSE)
+# inspect ORA results
+head(ORA)
 
 
 sort <- data %>%
@@ -152,8 +151,8 @@ GSEA <- clusterProfiler_GSEA(ranked_genes, annotation,
   mutate(Enrichment = "GSEA") %>%
   mutate(Treatment = treatment)
 
-# Save GSEA results
-write.csv(GSEA, "results/GSEA_results.csv", row.names = FALSE)
+# inspect GSEA results
+head(GSEA)
 ```
 
 
