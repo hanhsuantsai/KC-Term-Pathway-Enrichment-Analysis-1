@@ -151,25 +151,64 @@ if (!dir.exists("results")) {
   dir.create("results")
 }
 
-# Saving ORA and GSEA results into the 'results' folder
-write.csv(ora_results, file = "results/ora_results.csv", row.names = FALSE)
-write.csv(gsea_results, file = "results/gsea_results.csv", row.names = FALSE)
 ```
 Files that will be saved include:
 - `ora_results.csv`
 - `gsea_results.csv`
 
-## 6. Run Example Dataset
-A script named run_example_analysis.R is provided in the scripts/ folder to demonstrate how to run ORA and GSEA on example datasets in the `data/` folder.  
-Before running this script, ensure you have followed the above instructions to install the necessary R packages, and load the required functions.
-
-To execute the script, use the following command in R:
+## 6. Run the Analysis with an Example Dataset
+After completing the steps above (loading libraries, downloading gene sets, and defining ORA/GSEA functions), this step demonstrates the process by using example dataset available in the `data` folder. We input data, sort significant genes, and call the ORA/GSEA functions to perform the analysis.
 
 ```r
-## run example dataset
-source(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/scripts/run_example_analysis.R"))
+## read the csv from url in data
+
+data <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/demo.csv"))
+
+res <-data  %>%
+  filter(padj < 0.1) %>%
+  filter(abs(log2FoldChange) > 1)
+ 
+annotation <- KC_gene_set_REACTOME
+
+background <- data$gene
+
+treatment <- "test"
+
+sig_level <- 1
+
+
+ORA<- clusterProfiler_ORA(data =res$gene,
+                          annotation = KC_gene_set_REACTOME,
+                          background = background,
+                          treatment = treatment,
+                          sig_level = sig_level) %>%
+  subset(, select = c(1,2,5,6))%>%
+  mutate(Enrichment = "ORA") %>%
+  mutate(Treatment = treatment)
+
+# Save ORA results
+write.csv(ORA, "results/ORA_results.csv", row.names = FALSE)
+
+
+sort <- data %>%
+  filter(!is.na(gene)) %>%
+  filter(log2FoldChange != 0) %>%
+  group_by(gene) %>%
+  summarise(log2FoldChange = max(log2FoldChange)) %>% as.data.frame() %>%
+  arrange(desc(log2FoldChange))
+
+ranked_genes <- setNames(sort$log2FoldChange, sort$gene)
+GSEA <- clusterProfiler_GSEA(ranked_genes, annotation,
+                             treatment,
+                             sig_level) %>%
+  subset(, select = c(1,2,6,7)) %>%
+  mutate(Enrichment = "GSEA") %>%
+  mutate(Treatment = treatment)
+
+# Save GSEA results
+write.csv(GSEA, "results/GSEA_results.csv", row.names = FALSE)
 ```
-This will automatically load example dataset from the data/ folder, perform the analyses, and save the results in the results/ folder.
+Results will be stored in the Results folder    
 
 ## Citations
 
