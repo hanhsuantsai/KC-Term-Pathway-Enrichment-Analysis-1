@@ -1,45 +1,13 @@
-# KC Term Pathway Enrichment Analysis
+# KC Term Pathway Enrichment Analysis  
 
-This repository provides the necessary resources and scripts for performing pathway enrichment analysis using Key Characteristics (KC) terms. The repository supports both Over-Representation Analysis (ORA) and Gene Set Enrichment Analysis (GSEA), allowing users to input their gene lists and identify enriched KC terms. The Key Characteristics (KC) term pathway enrichment analysis leverages two primary databases: **KEGG** and **Reactome**, to associate a list of genes with specific pathways that may be overrepresented.  
-
-In this repository, we provide two functions using the clusterProfiler package in R:  
-**ORA** (Over-Representation Analysis): Identifies pathways enriched based on significantly differentially expressed genes (DEGs).  
-**GSEA** (Gene Set Enrichment Analysis): Detects pathways based on ranked gene lists.
-
-Users can input their own gene lists (either as a vector of DEGs for ORA or a ranked list for GSEA), and these functions will return the enriched KC terms based on KEGG and Reactome gene sets.
+This repository enables pathway enrichment analysis using Key Characteristics (KC) terms with **Over-Representation Analysis (ORA)** and **Gene Set Enrichment Analysis (GSEA)**. Users can input their gene lists and identify enriched pathways leveraging KEGG and Reactome databases. Follow the instructions below to successfully perform ORA and GSEA in R.  
 
 
-## A. Folder Structure
-
-The repository is organized into three main folders for better management of files and scripts:
-
-- **data/**: Contains raw and processed data files used for pathway enrichment.
-  - `KC_gene_set_KEGG.csv`: Contains KC terms and genes associated with the KC terms in the KEGG database.
-  - `KC_gene_set_REACTOME.csv`: Contains KC terms and genes associated with the KC terms in the Reactome database.
-  - `KC_Terms.csv`: Contains descriptions of the KC terms.
-  
-- **scripts/**: Contains the R scripts used for the pathway enrichment analysis.
-  - `ORA_function.R`: Script for running Over-Representation Analysis (ORA).
-  - `GSEA_function.R`: Script for running Gene Set Enrichment Analysis (GSEA).
-
-- **results/**: Enrichment results will be automatically saved in this directory after running the scripts.
-
-## B. Automated Data Loading
-The datasets required for the analysis are automatically loaded through the provided R code. You do not need to manually download or specify paths for the following datasets:  
-- `KC_gene_set_KEGG.csv:` Contains KC terms and genes associated with the KC terms in the KEGG database.
-- `KC_gene_set_REACTOME.csv:` Contains KC terms and genes associated with the KC terms in the Reactome database.
-- `KC_Terms.csv:` Contains descriptions of the KC terms.
+**Note:** The analysis script only supports **human gene symbols**. Ensure your input gene list contains valid human gene symbols.
 
 
-## C. Usage
-
-### 1. Supported Gene Symbols for KC Term Pathway Enrichment Analysis
-The analysis script only supports **human gene symbols**. Make sure your list of genes contains correct human gene symbols before starting the analysis.
-
-
-
-### 2. Dependencies
-To run the code successfully, you need to install and load the following R packages. Ensure your R setup has these installed:
+### 1. Load Dependencies
+To run the code successfully, you need to install and load the following R packages.
 ```r
 # Check if the required packages are installed and install them if not
 required_packages <- c("clusterProfiler", "tidyverse")
@@ -54,19 +22,21 @@ for (pkg in required_packages) {
 library(clusterProfiler)
 library(tidyverse)
 ```
-### 3. Loading the data 
-Run the following R code to load the datasets:
+### 2. Load Gene Sets
+Run the following R code to load Gene Sets:
 ```r
 # Loading KC gene sets Reactome from GitHub repository
 KC_gene_set_REACTOME <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_REACTOME.csv"))
+head(KC_gene_set_REACTOME)
 
 # Loading KC gene sets KEGG from GitHub repository
 KC_gene_set_KEGG <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_KEGG.csv"))
+head(KC_gene_set_KEGG)
 ```
 
-### 4.Running the Code
+### 3.Running the Code
 **ORA (Over-Representation Analysis)**
-This function performs an over-representation analysis using a list of differentially expressed genes (DEGs).
+This section defines the function to perform over-representation analysis using a list of differentially expressed genes (DEGs).
 
 ```r
 # clusterProfiler
@@ -97,15 +67,9 @@ KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term
 }
 ```
 
-### How to run ORA:
-
-1. **Load your DEG list:** Prepare your DEG list as a vector.
-2. **Load your background gene list:** Prepare your background gene list as another vector.
-3. **Load the annotation data:** The annotation data contains KC terms associated with genes from KEGG or Reactome. This is already loaded in your R.
-4. **Run the ORA function:** Call the clusterProfiler_ORA function with your inputs.
 
 ### GSEA (Gene Set Enrichment Analysis)
-This function runs GSEA using a ranked gene list and identifies the KC terms that are significantly enriched.
+This section defines the function to perform GSEA using a list of differentially expressed genes (DEGs).
 
 ```r
 clusterProfiler_GSEA <- function(data,         # ranked gene list
@@ -137,39 +101,61 @@ KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term
   return(output)                               # return the processed output
 }
 ```
-### How to run GSEA:
-1. Prepare a ranked gene list as input.
-2. **Load the annotation data:** The annotation data contains KC terms associated with genes from KEGG or Reactome. This is already loaded in your R.
-3. **Run the Gsea function:** Call the clusterProfiler_GSEA function with your inputs.
 
-## 5. Save Results
-Results from the enrichment analysis will be saved into the `results` folder. This folder is created automatically if it doesn't already exist.
-Run the following code to save the result:
-```r
-# Ensure the "results" folder exists
-if (!dir.exists("results")) {
-  dir.create("results")
-}
-
-# Saving ORA and GSEA results into the 'results' folder
-write.csv(ora_results, file = "results/ora_results.csv", row.names = FALSE)
-write.csv(gsea_results, file = "results/gsea_results.csv", row.names = FALSE)
-```
-Files that will be saved include:
-- `ora_results.csv`
-- `gsea_results.csv`
-
-## 6. Run Example Dataset
-A script named run_example_analysis.R is provided in the scripts/ folder to demonstrate how to run ORA and GSEA on example datasets in the `data/` folder.  
-Before running this script, ensure you have followed the above instructions to install the necessary R packages, and load the required functions.
-
-To execute the script, use the following command in R:
+## 4. Run the analysis with an example dataset
+This step demonstrates how to input data and use the ORA/GSEA functions with an example dataset (available in the `data` folder) after completing steps 1-3.  
+Use the provided example to understand the workflow, including data preparation, sorting significant genes, and calling the functions.
 
 ```r
-## run example dataset
-source(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/scripts/run_example_analysis.R"))
+## read the csv from url in data
+
+data <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/demo.csv"))
+
+res <-data  %>%
+  filter(padj < 0.1) %>%
+  filter(abs(log2FoldChange) > 1)
+ 
+annotation <- KC_gene_set_REACTOME
+
+background <- data$gene
+
+treatment <- "test"
+
+sig_level <- 1
+
+
+ORA<- clusterProfiler_ORA(data =res$gene,
+                          annotation = KC_gene_set_REACTOME,
+                          background = background,
+                          treatment = treatment,
+                          sig_level = sig_level) %>%
+  subset(, select = c(1,2,5,6))%>%
+  mutate(Enrichment = "ORA") %>%
+  mutate(Treatment = treatment)
+
+# Save ORA results
+write.csv(ORA, "results/ORA_results.csv", row.names = FALSE)
+
+
+sort <- data %>%
+  filter(!is.na(gene)) %>%
+  filter(log2FoldChange != 0) %>%
+  group_by(gene) %>%
+  summarise(log2FoldChange = max(log2FoldChange)) %>% as.data.frame() %>%
+  arrange(desc(log2FoldChange))
+
+ranked_genes <- setNames(sort$log2FoldChange, sort$gene)
+GSEA <- clusterProfiler_GSEA(ranked_genes, annotation,
+                             treatment,
+                             sig_level) %>%
+  subset(, select = c(1,2,6,7)) %>%
+  mutate(Enrichment = "GSEA") %>%
+  mutate(Treatment = treatment)
+
+# Save GSEA results
+write.csv(GSEA, "results/GSEA_results.csv", row.names = FALSE)
 ```
-This will automatically load example dataset from the data/ folder, perform the analyses, and save the results in the results/ folder.
+
 
 ## Citations
 
