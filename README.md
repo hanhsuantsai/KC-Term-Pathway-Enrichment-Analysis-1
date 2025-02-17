@@ -26,10 +26,10 @@ library(tidyverse)
 Run the following R code to load Gene Sets:
 ```r
 # Loading KC gene sets Reactome from GitHub repository
-KC_gene_set_REACTOME <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_REACTOME.csv"))
+KC_gene_set_REACTOME <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis-1/main/data/KC_gene_set_REACTOME.csv"))
 
 # Loading KC gene sets KEGG from GitHub repository
-KC_gene_set_KEGG <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_gene_set_KEGG.csv"))
+KC_gene_set_KEGG <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis-1/main/data/KC_gene_set_KEGG.csv"))
 ```
 
 ### 3.Running the Code
@@ -44,7 +44,7 @@ clusterProfiler_ORA <- function(data, # a list of DEG
                                 treatment, # experimental condition
                                 sig_level) {# significant level (fdr) for enrichment analysis
   
-KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_Terms.csv"))
+KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis-1/main/data/KC_Terms.csv"))
   
   eTerm <- enricher(gene = data,
                     universe = background,
@@ -75,7 +75,7 @@ clusterProfiler_GSEA <- function(data,         # ranked gene list
                                  treatment,    # experimental condition label
                                  sig_level) {  # significance level (FDR cutoff)
   
-KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/KC_Terms.csv"))
+KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis-1/main/data/KC_Terms.csv"))
   
   eTerm <- GSEA(data,                          # ranked gene list
                 TERM2GENE = annotation,        # gene set annotations
@@ -88,7 +88,7 @@ KC_Terms <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term
     mutate(treatment = treatment) %>%          # add treatment label
     subset(, select = c("ID",                  # select relevant columns
                         "p.adjust",
-                        "core_enrichment",
+                        "core_ment",
                         "NES",
                         "treatment"))
   
@@ -107,7 +107,7 @@ Use the provided example to understand the workflow, including data preparation,
 ```r
 ## read the csv from url in data
 
-data <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/demo.csv"))
+data <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis-1/main/data/demo.csv"))
 
 res <-data  %>%
   filter(padj < 0.1) %>%
