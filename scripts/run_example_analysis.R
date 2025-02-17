@@ -1,6 +1,6 @@
 ## read the csv from url in data
 
-data <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis/main/data/demo.csv"))
+data <- read.csv(url("https://raw.githubusercontent.com/kingdave-hub/KC-Term-Pathway-Enrichment-Analysis-1/main/data/demo.csv"))
 
 res <-data  %>%
   filter(padj < 0.1) %>%
